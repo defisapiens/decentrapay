@@ -1,0 +1,10 @@
+@import "node_modules/bulmaswatch/lumen/variables";
+//$body-background-color: #549127;
+//$title-color: #fff;
+//$text: #fff;
+@import "~bulma/bulma";
+@import "node_modules/bulmaswatch/lumen/overrides";
+
+.invoice .buttons {
+  margin-top: 1rem;
+}

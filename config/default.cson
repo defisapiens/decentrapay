@@ -1,0 +1,14 @@
+listen: 8000
+provider:
+  type: "rpc"
+  uri: "http://localhost:8545"
+
+apiKey: "CHANGEME"
+
+invoices:
+  minConfirmations: 1
+
+public:
+  contracts:
+    DAI: 
+      address: "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359"

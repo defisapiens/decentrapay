@@ -1,0 +1,13 @@
+*.sw?
+*.log
+*.orig
+/.tmp
+/node_modules
+/dist
+npm-debug.*
+static/runtime*
+static/main*
+static/vendor*
+static/media
+static/index*
+static/*.css
