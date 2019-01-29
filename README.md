@@ -47,8 +47,13 @@ Open config/default.cson in a text editor and make necessary changes:
 
 ## Running DaiPay
 
-To run the server, use the following command:
+To run the server in the development mode, use the following command:
 
+        npm run dev 
+
+For the production mode:
+
+        npm run build
         npm start
 
 By default, DaiPay connects to 127.0.0.1:27017/daipay. You can override the default connection settings by using MONGO_URL environment variable
