@@ -1,7 +1,7 @@
 **DaiPay** is an open-source payment processor which allows you to receive Maker DAI tokens for payments.
 
 ### Motivation
-I've been related to payment processing in Bitcoin in some way for a long time. And, while i'm love the idea of Bitcoin in general, i think Bitcoin is too impractical for use by merchants because of its price volatility and that stablecoins will dominate payment processing eventually. To me Maker DAI seems to be an ideal electronic cash that has all chances to be widely adopted by merchants worldwide. The project is in its very infant stage, so do not expect much from it yet. Spreading the word, suggestions and contributing are welcome.
+I've been related to payment processing in Bitcoin in some way for a long time. And, while i love the idea of Bitcoin in general, i think Bitcoin is too impractical for use by merchants because of its price volatility and that stablecoins will dominate payment processing eventually. To me Maker DAI seems to be an ideal electronic cash that has all chances to be widely adopted by merchants worldwide. The project is in its very infant stage, so do not expect much from it yet. Spreading the word, suggestions and contributing are welcome.
 
 ### Features
 - Direct P2P payments
