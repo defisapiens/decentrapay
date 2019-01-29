@@ -6,11 +6,6 @@ const InvoiceItem = {
   amount: Number
 }
 
-const Transaction = {
-  txId: String,
-  amount: Number
-}
-
 const InvoiceCallback = {
   url: String
 }

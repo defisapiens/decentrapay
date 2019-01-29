@@ -72,22 +72,17 @@ module.exports = (env = {prod: process.env['NODE_ENV'] == 'production'}) => {
         filename: 'index.html',
         inject: 'body',
         meta: [
-          {name:'description',content:'Daipay.js'},
+          {name:'description',content:'Daipay'},
           {name:'viewport',content:'width=device-width, initial-scale=1.0'},
         ],
         links: [
           {rel:'icon',type:'image/png',href:'/icons/favicon.png?v=2'},
           {rel:'apple-touch-icon',sizes:'180x180',href:'/icons/apple-touch-icon.png'},
-          {rel:'stylesheet',href:'https://use.fontawesome.com/releases/v5.5.0/css/all.css',integrity:'sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU',crossorigin:'anonymous'},
-          {rel:'stylesheet',href:"https://fonts.googleapis.com/css?family=Open+Sans"}
+          {rel:'stylesheet',href:'https://use.fontawesome.com/releases/v5.5.0/css/all.css',integrity:'sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU',crossorigin:'anonymous'}
         ],
         scripts: [
         ],
-        bodyHtmlSnippet: '<div id="app"/>',
-        googleAnalytics: env.prod ? {
-          trackingId: 'UA-1967441-12',
-          pageViewOnLoad: true
-        } : null
+        bodyHtmlSnippet: '<div id="app"/>'
       }),
       new webpack.DefinePlugin({
         __DEV__
