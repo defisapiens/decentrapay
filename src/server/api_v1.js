@@ -20,6 +20,7 @@ router.post('/invoice', async (ctx, next) => {
     }
     return
   }
+  form.expires = form.expires || Date.now() + 24 * 60 * 60000
   const invoice = await Invoices.createInvoice(form) 
   ctx.body = {
     invoiceId: invoice._id

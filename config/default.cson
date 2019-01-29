@@ -2,6 +2,7 @@ listen: 8000
 provider:
   type: "rpc"
   uri: "http://localhost:8545"
+  #uri: "https://mainnet.vnode.app/v1/<YOUR TOKEN>"
 
 apiKey: "CHANGEME"
 

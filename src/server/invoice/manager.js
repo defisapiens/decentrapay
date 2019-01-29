@@ -17,6 +17,7 @@ export default class {
     return Invoice.create(props)
   } 
   static getInvoice(id) {
+    console.log("getInvoice",id)
     return Invoice.findOne({_id:id},{callbacks:0,metadata:0})
   }
   static findPendingInvoices() {

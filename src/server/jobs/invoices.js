@@ -44,10 +44,14 @@ export async function checkPendingInvoices(tokenContract, provider) {
 export function runLastBlockJob() {
   let curBlock, lastBlock = 0
   const updateLastBlock = async _ => {
-    curBlock = await  ethProvider.getBlockNumber()
-    if (curBlock > lastBlock) {
-      lastBlock = ethProvider.blockNumber
-      await checkPendingInvoices(DAI, ethProvider) 
+    try {
+      curBlock = await  ethProvider.getBlockNumber()
+      if (curBlock > lastBlock) {
+        lastBlock = ethProvider.blockNumber
+        await checkPendingInvoices(DAI, ethProvider) 
+      }
+    } catch(e) {
+      console.log(e)
     }
     setTimeout(updateLastBlock, 1000)
   }
