@@ -1,5 +1,8 @@
 **DaiPay** is an open-source payment processor which allows you to receive Maker DAI tokens for payments.
 
+### Motivation
+I've been related to payment processing in Bitcoin in some way for a long time. And, while i'm love the idea of Bitcoin in general, i think Bitcoin is too impractical for use by merchants because of its price volatility and that stablecoins will dominate payment processing eventually. To me Maker DAI seems to be an ideal electronic cash that has all chances to be widely adopted by merchants worldwide. The project is in its very infant stage, so do not expect much from it yet. Spreading the word, suggestions and contributing are welcome.
+
 ### Features
 - Direct P2P payments
 - No volatility risk as DAI stablecoin is tied to US dollar 1:1
@@ -108,10 +111,10 @@ Newly created invoices have *pending* state.  After an invoice is paid its state
 If the invoice was not paid on time, as configured by the *expires* property, its status will be set to *expired* and no callbacks will be called thereafter.
 
 
-TODO
+## TODO
 - Adding a project logo
 - Script for collecting and forwarding payments from deposit addresses
 
 
-CREDITS
+## CREDITS
 - Inspired by [Baron](https://github.com/baronpay/baron) project
