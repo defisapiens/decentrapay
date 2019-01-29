@@ -66,7 +66,7 @@ Invoice object has the following properties:
 
   - apiKey - The API key to verify that the invoice creator is trusted (it not stored in the database)
   - currency - Currency of the invoice. Only DAI is supported at the moment. (optional)
-  - merchant - The information on merchant (optional)
+  - merchant - The information about the merchant (optional)
        - name - The merchant’s name
        - address - The address to be displayed in the invoice
   - items - an array containing the invoice items. DaiPay calculates totalAmount for all items and stores it with the invoice.
@@ -84,7 +84,7 @@ Invoices can be created by sending a POST request to the /api/v1/invoice endpoin
 
 An example with curl (replace API_KEY with the apiKey from the config file):
 
-        curl http://localhost:8000/api/v1/invoice --header "Content-Type: application/json" -X POST -d '{"apiKey":"API_KEY",”items":[{"description":"My item","amount":1}]}'
+        curl http://localhost:8000/api/v1/invoice --header "Content-Type: application/json" -X POST -d '{"apiKey":"API_KEY","items":[{"description":"My item","amount":1}]}'
 
 The backend will create a new invoice record and return its id
 
