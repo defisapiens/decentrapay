@@ -10,21 +10,26 @@ I've been involved with payment processing in Bitcoin in some way for a long tim
 - No middleman
 - REST API for managing invoices
 - Web interface for accessing invoices
+- A tool for managing generated wallets and forwarding payments
 
 ### Requirements
 - Node v10 or newer
-- MongoDB server
+- MongoDB database server
 - Access to the Ethereum network
 
 ## Installation
 
 Run the below commands:
 
-        git clone https://github.com/codevet/daipay.git
-        cd daipay
-        npm install
+    git clone https://github.com/codevet/daipay.git
+    cd daipay
+    npm install
 
 
+Don't forget to update local reposotory regularly to catch up with latest updates
+
+    git pull origin master
+    npm install
 
 ## Configuration
 
@@ -47,16 +52,16 @@ Open config/default.cson in a text editor and make necessary changes:
 
 ## Running DaiPay
 
-To run the server in the development mode, use the following command:
+To run the server in development mode, use the following command:
 
         npm run dev 
 
-For the production mode:
+For production mode:
 
         npm run build
         npm start
 
-By default, DaiPay connects to 127.0.0.1:27017/daipay. You can override the default connection settings by using MONGO_URL environment variable
+By default, DaiPay connects to MongoDB database by using the default connection url 127.0.0.1:27017/daipay. You can override the default connection settings by using MONGO_URL environment variable
 
         MONGO_URL=mongodb://user:password@dbhost:dbport/daipay npm start
 
@@ -115,10 +120,27 @@ Newly created invoices have *pending* state.  After an invoice is paid its state
 
 If the invoice was not paid on time, as configured by the *expires* property, its status will be set to *expired* and no callbacks will be called thereafter.
 
+## Maintainence
+
+### Collecting payments 
+Until it is possible to [pay for gas with tokens](https://github.com/ethereum/EIPs/issues/865) on the Ethereum network, collecting and forwarding payments can be a bit challenge because generated wallets need gas in order to be able to transfer DAI. For that purpose, DaiPay includes a tool named *wallets* that funds wallets with small amounts of ETH if needed and then transfer tokens out.
+
+You can run it with the following command:
+   
+   npm run wallets --  --fundamount 0.001 --collect  0xF7067158014Af7785BF008573Db2C6c5Acf390CA --privatekey 4e4a0db6ee08f21c68923f9a068a40c97769796fc88232c465a932d102a6eab4
+
+the *collect* parameter specifies the destination address for collected payments and the *privatekey* is a private key of any account with small amount of ETH (it can be a key exported from MetaMask, for example). In the result, each non-empty wallet that linked to a closed invoice will be funded with 0.001 ETH if needed and then DAI tokens be transferred out to the specified address. Released wallets will be then re-used by the backend because there is a high chance they still have gas.
+
+
+**IMPORTANT**: Be careful when using this tool - any mistake may result in lost funds. Do not use accounts with large amounts of ETH.
+
 
 ## TODO
 - Adding a project logo
-- Script for collecting and forwarding payments from deposit addresses
+~- Script for collecting and forwarding payments from deposit addresses~
+- Point-of-Sale mode
+- POA/XDAI integration
+- Lighting network intergration (Raiden?)
 
 
 ## CREDITS

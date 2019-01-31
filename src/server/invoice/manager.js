@@ -7,7 +7,11 @@ export default class {
     props._id = shortid.generate()
     props.created = Date.now()
     const wallet = ethers.Wallet.createRandom()
-    const deposit = await DepositAddress.create({_id:shortid.generate(),address:wallet.address,privateKey:wallet.privateKey})
+    // first try to find a wallet that was released before because there is a chance it has some gas already
+    let deposit = await DepositAddress.findOne({usedBy:''})
+    if (!deposit) {
+      deposit = await DepositAddress.create({_id:shortid.generate(),address:wallet.address,privateKey:wallet.privateKey})
+    }
     props.deposit = {
       _id: deposit._id,
       address: deposit.address,

@@ -21,7 +21,7 @@ if (__DEV__) {
   const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
   const koaWebpack = require('koa-webpack')
   const serve = require('koa-static')
-  const [webConfig, ] = requireFunc('../webpack.config.js')()
+  const [webConfig, ] = requireFunc('../tools/app.webpack.config.js')()
   koaWebpack({
     config: webConfig,
     devMiddleware: {index:false}

@@ -21,18 +21,14 @@ async function main() {
   const options = commandLineArgs(optionDefs)
   const wallets = await Invoices.findUsedDepositAddresses()
   console.log(`Found ${wallets.length} active wallets`)
-  const gasPrice = new BigNumber((await ethProvider.getGasPrice()).toString())
   let fundWallet
   if (options.privatekey) {
     fundWallet = new ethers.Wallet(options.privatekey, ethProvider)
   }
-  console.log(`gas price of the last block: ${gasPrice.toNumber()}`)
   for(let wallet of wallets) {
     let invoice
     if (wallet.usedBy)
       invoice = await Invoices.getInvoice(wallet.usedBy)
-    else
-      invoice = await Invoices.getInvoiceByDepositAddress(wallet._id)
     if (!invoice)
       console.log(`wallet ${wallet.address}: invoice not found`)
     let balanceBN = (await DAI.balanceOf(wallet.address))
@@ -51,6 +47,8 @@ async function main() {
         if (!fundWallet) {
           fatal("privatekey should be specified")
         }
+        const gasPrice = new BigNumber((await ethProvider.getGasPrice()).toString()).multipliedBy(1.25)  // increase last block gasprice 25% for faster transactions
+        console.log(`setting gas price to ${gasPrice.toNumber()}`)
         const ethMin = gasPrice.multipliedBy(new BigNumber(options.gaslimit))
         if (ethBalance.lt(ethMin)) {
           console.log(`${wallet.address}: minimum ${fromBN(ethMin)} ETH is required`)
