@@ -2,13 +2,12 @@
   "name": "daipay",
   "version": "1.0.1",
   "description": "Maker DAI payment processor",
-  "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:@babel/register --timeout 20000 test/test.js",
     "wallets": "./node_modules/.bin/babel-node ./src/scripts/wallets.js",
     "watch": "webpack --config ./tools/app.webpack.config.js --mode development --watch",
-    "devserver": "$(npm bin)/nodemon -w ./dist dist/server",
-    "dev": "npm-run-all --parallel watch devserver",
+    "devserver": "$(npm bin)/nodemon -w ./dist ./dist/server",
+    "dev": "webpack --config ./tools/app.webpack.config.js --mode development && npm-run-all --parallel watch devserver",
     "build": "NODE_ENV=production webpack --config ./tools/app.webpack.config.js --mode production --verbose",
     "build-scripts": "NODE_ENV=production ./node_modules/.bin/webpack --config ./tools/scripts.webpack.config.js",
     "start": "NODE_ENV=production node ./dist/server"
