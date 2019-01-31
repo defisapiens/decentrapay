@@ -125,9 +125,9 @@ If the invoice was not paid on time, as configured by the *expires* property, it
 ### Collecting payments 
 Until it is possible to [pay for gas with tokens](https://github.com/ethereum/EIPs/issues/865) on the Ethereum network, collecting and forwarding payments can be a bit challenge because generated wallets need gas in order to be able to transfer DAI. For that purpose, DaiPay includes a tool named *wallets* that funds wallets with small amounts of ETH if needed and then transfer tokens out.
 
-You can run it with the following command:
+Example command usage:
    
-    npm run wallets --  --fundamount 0.001 --collect  0xF7067158014Af7785BF008573Db2C6c5Acf390CA --privatekey 4e4a0db6ee08f21c68923f9a068a40c97769796fc88232c465a932d102a6eab4
+    npm run wallets --  --fundamount 0.001 --collect <YOUR ETHEREUM ADDRESS> --privatekey 4e4a0db6ee08f21c68923f9a068a40c97769796fc88232c465a932d102a6eab4
 
 the *collect* parameter specifies the destination address for collected payments and the *privatekey* is a private key of any account with small amount of ETH (it can be a key exported from MetaMask, for example). In the result, each non-empty wallet that linked to a closed invoice will be funded with 0.001 ETH if needed and then DAI tokens be transferred out to the specified address. Released wallets will be then re-used by the backend because there is a high chance they still have gas.
 
