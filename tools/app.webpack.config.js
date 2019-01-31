@@ -10,7 +10,7 @@ const mkdirp = require('mkdirp')
 const clientConfigPath = path.resolve(__dirname, '../static/client.json')
 
 console.log("Generating client config")
-mkdirp.sync('../static')
+mkdirp.sync('./static')
 fs.writeFileSync(clientConfigPath, JSON.stringify(config.public))
 
 module.exports = (env = {prod: process.env['NODE_ENV'] == 'production'}) => {
