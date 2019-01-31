@@ -17,7 +17,8 @@ const DepositAddressSchema = new db.Schema({
   },
   address: String,
   created: Number,
-  privateKey: String
+  privateKey: String,
+  usedBy: String // invoice Id
 })
 
 const InvoiceSchema = new db.Schema({
@@ -65,7 +66,9 @@ const InvoiceSchema = new db.Schema({
     address: String 
   }
 })
-// @TODO indexes
+InvoiceSchema.index({state:1})
+DepositAddressSchema.index({invoiceId:1})
+
 export const DepositAddress = db.model('DepositAddress', DepositAddressSchema)
 export const Invoice = db.model('Invoice', InvoiceSchema)
 

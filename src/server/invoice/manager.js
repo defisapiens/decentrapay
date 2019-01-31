@@ -14,11 +14,15 @@ export default class {
       created: Date.now()
     }
     props.state = 'pending'
-    return Invoice.create(props)
+    return Invoice.create(props).then( invoice => {
+      return DepositAddress.update({_id:deposit._id},{$set:{usedBy:invoice._id}}).then( result => (invoice))
+    })
   } 
   static getInvoice(id) {
-    console.log("getInvoice",id)
     return Invoice.findOne({_id:id},{callbacks:0,metadata:0})
+  }
+  static getInvoiceByDepositAddress(id) {
+    return Invoice.findOne({'deposit._id':id})
   }
   static findPendingInvoices() {
     return Invoice.find({state:{$in:['pending','confirming']}})
@@ -28,5 +32,11 @@ export default class {
   }
   static async updateInvoice(id, upd) {
     return Invoice.update({_id:id},{$set:upd})
+  }
+  static findUsedDepositAddresses() {
+    return DepositAddress.find({usedBy:{$ne:''}})
+  }
+  static updateDepositAddress(id, upd) {
+    return DepositAddress.update({_id:id},{$set:upd})
   }
 }

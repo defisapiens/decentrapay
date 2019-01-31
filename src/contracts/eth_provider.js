@@ -8,9 +8,6 @@ if (!provider) {
     case 'rpc':
       provider  = new ethers.providers.JsonRpcProvider(config.provider.uri,config.provider.network)
       break
-    case 'infura':
-      //provider = new ethers.providers.InfuraProvider('kovan',config.provider
-      break
   }
 }
 export default provider

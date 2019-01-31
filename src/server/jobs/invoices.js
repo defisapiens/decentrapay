@@ -1,8 +1,7 @@
 import _ from 'lodash'
-import { DAI } from '../contracts'
+import { DAI, ethProvider } from '../../contracts'
 import Invoices from '../invoice/manager'
-import ethProvider from '../eth_provider'
-import BigNumber from 'bignumber.js'
+import { fromBN } from '../../common/utils'
 import config from 'config'
 
 export async function checkPendingInvoices(tokenContract, provider) {
@@ -12,7 +11,7 @@ export async function checkPendingInvoices(tokenContract, provider) {
   console.log(`checkPendingInvoices: found ${invoices.length} invoices`)
   for(let invoice of invoices) {
     const balanceBN = (await tokenContract.balanceOf(invoice.deposit.address)).toString()
-    const balance = new BigNumber(balanceBN).dividedBy(Math.pow(10,18)).toNumber()
+    const balance = fromBN(balanceBN)
     const upd = {}
     if (balance != invoice.paidAmount) {
       upd.paidAmount = balance
