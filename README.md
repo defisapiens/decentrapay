@@ -36,7 +36,7 @@ Don't forget to update local reposotory regularly to catch up with latest update
 DaiPay needs to connect to the Ethereum network to process transactions. You have two options:
 
 - Connect to a locally running Ethereum node (geth or parity)
-- Use a third-party node service provider such as [VNode.app](https://vnode.app)
+- Use a third-party node service provider such as [Infura](https://infura.io/)
 
 Open config/default.cson in a text editor and make necessary changes:
 
