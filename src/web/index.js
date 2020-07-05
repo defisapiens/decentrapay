@@ -1,16 +1,25 @@
 import { app } from 'hyperapp'
+import withRouter from '@mrbarrysoftware/hyperapp-router'
+import Main from './main'
+import routes from './routes'
 
-let unsubscribe
-const main = require('./main').default
-let state = main.state
+const Init = [
+  {}
+]
 
-const App = app(
-  state,
-  main.actions,
-  main.view,
-  document.body
-)
-if (unsubscribe) {
-  unsubscribe()
-}
-unsubscribe = main.router.subscribe(App.location)
+const container = document.getElementById('app')
+
+withRouter(app)({
+  router: {
+    RouteAction: (state, {params, path}) => ({...state}),
+    disableAnchorCapture: false,
+    routes,
+  },
+  init: Init, 
+  node: container,
+  view: Main,
+  subscriptions: state => {
+    return []
+  }
+})
+

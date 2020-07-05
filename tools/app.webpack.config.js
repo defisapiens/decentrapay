@@ -48,7 +48,8 @@ module.exports = (env = {prod: process.env['NODE_ENV'] == 'production'}) => {
         config: clientConfigPath
       },
     },
-    optimization: {
+    devtool: env.prod ? '' : 'eval',
+    optimization: env.prod ? {
       runtimeChunk: 'single',
       splitChunks: {
         cacheGroups: {
@@ -59,7 +60,7 @@ module.exports = (env = {prod: process.env['NODE_ENV'] == 'production'}) => {
           }
         }
       }
-    } ,
+    } : {} ,
     plugins: [
       new MiniCssExtractPlugin({
         filename: __DEV__ ? '[name].css' : '[name].[hash].css',

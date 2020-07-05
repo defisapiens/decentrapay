@@ -3,6 +3,7 @@ import { classNames, displayDAI } from './helpers'
 import QRCode from 'qrcode'
 import config from 'config'
 
+/*
 let updater
 
 export default {
@@ -100,3 +101,36 @@ export default {
   }
 }
 
+*/
+export function fx(a) {
+  return function(b) {
+    return [a, b]
+  }
+}
+function SetInvoice(state, invoice) {
+  return {...state, invoice}
+}
+
+async function fetchInvoice(dispatch, params) {
+  console.log("Fetching invoice",params.id)
+  const opts = {}
+  opts.headers = new Headers({'Content-Type': 'application/json'})
+  let result = await fetch(`/api/v1/invoice/${params.id}`, opts)
+  result = await result.json()
+  console.log("Result",result)
+  dispatch([SetInvoice, result])
+}
+
+const FetchInvoiceFx = fx(fetchInvoice)
+
+export default {
+  Init: (state, id) => {
+    return [
+      state,
+      FetchInvoiceFx({id})
+    ]
+  },
+  View: _ => (
+    <div></div>
+  )
+}
