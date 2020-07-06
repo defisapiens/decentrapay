@@ -9,6 +9,7 @@ export default {
   },
   '/invoice/:id': {
     OnEnter: (state, params) => {
+      console.log("OnEnter")
       return Invoice.Init({...state, viewFn: Invoice.View}, params.id)
     }
   }

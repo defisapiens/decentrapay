@@ -5,6 +5,9 @@
 @import "~bulma/bulma";
 @import "node_modules/bulmaswatch/lumen/overrides";
 
+.invoice {
+  font-size: 12px;
+}
 .invoice .buttons {
   margin-top: 1rem;
 }
