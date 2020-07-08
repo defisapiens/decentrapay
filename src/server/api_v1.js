@@ -29,8 +29,8 @@ router.post('/invoice', async (ctx, next) => {
 
 router.get('/invoice/:id', async (ctx, next) => {
   const invoice = await Invoices.getInvoice(ctx.params.id) 
+  console.log("INVOICE",invoice)
   ctx.body = invoice
 })
-
 
 export default router

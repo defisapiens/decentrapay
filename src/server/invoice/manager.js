@@ -1,46 +1,51 @@
-import { Invoice, DepositAddress } from './models'
-import shortid from 'shortid'
+import PouchDB from 'pouchdb'
 import { ethers } from 'ethers'
 
-export default class {
-  static async createInvoice(props) {
-    props._id = shortid.generate()
-    props.created = Date.now()
-    const wallet = ethers.Wallet.createRandom()
-    // first try to find a wallet that was released before because there is a chance it has some gas already
-    let deposit = await DepositAddress.findOne({usedBy:''})
-    if (!deposit) {
-      deposit = await DepositAddress.create({_id:shortid.generate(),address:wallet.address,privateKey:wallet.privateKey})
+
+let walletDB, invoiceDB 
+
+if (!walletDB)  {
+  PouchDB.plugin(require('pouchdb-find'))
+  PouchDB.plugin(require('pouchdb-adapter-node-websql'))
+  walletDB = new PouchDB('wallets.db', {adapter:'websql'})
+  invoiceDB = new PouchDB('invoices.db', {adapter:'websql'})
+  invoiceDB.createIndex({
+    index: {
+      fields: ['state']
     }
-    props.deposit = {
-      _id: deposit._id,
-      address: deposit.address,
+  })
+
+}
+
+export default class {
+  static async createInvoice(form) {
+    delete form['apiKey']
+    const props = {...form}
+    props.created = Date.now()
+    let wallet = ethers.Wallet.createRandom()
+    wallet = {address:wallet.address,privateKey:wallet.privateKey}
+    let result = await walletDB.post(wallet)
+    props.wallet = {
+      _id: result.id,
+      address: wallet.address,
       created: Date.now()
     }
     props.state = 'pending'
-    return Invoice.create(props).then( invoice => {
-      return DepositAddress.update({_id:deposit._id},{$set:{usedBy:invoice._id}}).then( result => (invoice))
-    })
+    result = await invoiceDB.post(props)
+    return invoiceDB.get(result.id).then( res => { console.log(res); return res } )
   } 
   static getInvoice(id) {
-    return Invoice.findOne({_id:id},{callbacks:0,metadata:0})
-  }
-  static getInvoiceByDepositAddress(id) {
-    return Invoice.findOne({'deposit._id':id})
+    return invoiceDB.get(id)
   }
   static findPendingInvoices() {
-    return Invoice.find({state:{$in:['pending','confirming']}})
+    return invoiceDB.find({selector:{state:{$in:['pending','confirming']}}}).then( result => result.docs )
   }
   static findPaidInvoices() {
-    return Invoice.find({state:'paid'})
+    return invoiceDB.find({selector:{state:'paid'}}).then( result => result.docs )
   }
   static async updateInvoice(id, upd) {
-    return Invoice.update({_id:id},{$set:upd})
-  }
-  static findUsedDepositAddresses() {
-    return DepositAddress.find({usedBy:{$ne:''}})
-  }
-  static updateDepositAddress(id, upd) {
-    return DepositAddress.update({_id:id},{$set:upd})
+    let doc = await invoiceDB.get(id)
+    doc = Object.assign(doc, upd) 
+    return invoiceDB.put({_id:id,_rev:doc._rev,...doc})
   }
 }

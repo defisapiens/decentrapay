@@ -46,7 +46,7 @@ describe('basic functionality', function() {
   let invoiceId, invoice
   before(done => {
     // Load the wallet to deploy the contract with
-    provider = new ethers.providers.JsonRpcProvider('http://localhost:7545')
+    provider = new ethers.providers.JsonRpcProvider('http://localhost:8545')
     provider.listAccounts().then( result => {
       accounts = result
       console.log(accounts)
@@ -111,18 +111,18 @@ describe('basic functionality', function() {
   it('should send coins to the invoice', done => {
     const { checkPendingInvoices } = require('../src/server/jobs/invoices')
     const { checkPendingNotifications } = require('../src/server/jobs/callbacks') 
-    contract.transfer(invoice.deposit.address, new BigNumber(0.99 * Math.pow(10,18)).toString()).then( tx => {
+    contract.transfer(invoice.wallet.address, new BigNumber(0.99 * Math.pow(10,18)).toString()).then( tx => {
       return tx.wait()
     }).then( res => {
       contract.balanceOf(accounts[0]).then( result => console.log("balance:",result.toString()))
-      contract.balanceOf(invoice.deposit.address).then( result => console.log("invoice balance:",result.toString()))
+      contract.balanceOf(invoice.wallet.address).then( result => console.log("invoice balance:",result.toString()))
       return checkPendingInvoices(contract,provider).then( result => {
         return fetchInvoice(invoiceId).then( result => {
           assert(result.state === 'pending')          
         })
       })
     }).then( _ => {
-      return contract.transfer(invoice.deposit.address, new BigNumber(0.01 * Math.pow(10,18)).toString()).then( tx => {
+      return contract.transfer(invoice.wallet.address, new BigNumber(0.01 * Math.pow(10,18)).toString()).then( tx => {
         return tx.wait()
       }).then( async res => {
         await checkPendingInvoices(contract,provider)

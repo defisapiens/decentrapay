@@ -6,11 +6,13 @@ import config from 'config'
 
 export async function checkPendingInvoices(tokenContract, provider) {
   const invoices = await Invoices.findPendingInvoices()
+  console.log("INVOICES",invoices)
   const curBlock = await provider.getBlockNumber()
   const tasks = []
   console.log(`checkPendingInvoices: found ${invoices.length} invoices`)
   for(let invoice of invoices) {
-    const balanceBN = (await tokenContract.balanceOf(invoice.deposit.address)).toString()
+    console.log(invoice)
+    const balanceBN = (await tokenContract.balanceOf(invoice.wallet.address)).toString()
     const balance = fromBN(balanceBN)
     const upd = {}
     if (balance != invoice.paidAmount) {

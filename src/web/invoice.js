@@ -126,7 +126,7 @@ async function fetchInvoice(dispatch, params) {
   console.log("Result",invoice)
   dispatch([SetInvoice, invoice])
   if (params.generateQR) {
-    let qrcode = await QRCode.toDataURL(`ethereum:${invoice.deposit.address}/transfer?address=${config.contracts.DAI.address}&uint256=${invoice.totalAmount}`)
+    let qrcode = await QRCode.toDataURL(`ethereum:${invoice.wallet.address}/transfer?address=${config.contracts.DAI.address}&uint256=${invoice.totalAmount}`)
     dispatch([SetQRCode, qrcode])
   }
 }
@@ -195,14 +195,14 @@ export default {
         <tr><td><strong>Paid:</strong></td><td>{ displayDAI(invoice.paidAmount) }</td></tr>
         </tbody>
         </table>
-        { amountDue >= 0.01 ? <div>Transfer <strong>{ displayDAI(amountDue) }</strong> to</div> : 'Deposit address:'} <div><strong>{ invoice.deposit.address }</strong></div>
+        { amountDue >= 0.01 ? <div>Transfer <strong>{ displayDAI(amountDue) }</strong> to</div> : 'Deposit address:'} <div><strong>{ invoice.wallet.address }</strong></div>
         <div class="columns">
           <div class="column is-6">
             { qrcode ? <img src={qrcode} /> : null }
           </div>
           <div class="column is-6">
             <div class="buttons is-centered">
-              <a class="button is-info is-small" href={`http://etherscan.io/address/${invoice.deposit.address}`} target='_blank'>View transactions</a>
+              <a class="button is-info is-small" href={`http://etherscan.io/address/${invoice.wallet.address}`} target='_blank'>View transactions</a>
             </div>
           </div>
         </div>
