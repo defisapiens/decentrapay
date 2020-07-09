@@ -5,6 +5,6 @@ export function classNames(arr) {
 }
 
 
-export function displayDAI(amount) {
-  return <span>{amount.toFixed(2)} DAI</span>
+export function displayCurrency(amount, currency) {
+  return <span>{amount.toFixed(2)} {currency}</span>
 }

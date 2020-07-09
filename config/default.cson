@@ -14,3 +14,9 @@ public:
     DAI: 
       address: "0x6b175474e89094c44da98b954eedeac495271d0f" # Mainnet
       # address: "0xC4375B7De8af5a38a93548eb8453a498222C4fF2" DAI token on Kovan network
+    USDT:
+      address: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    USDC:
+      address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+    TUSD:
+      address: "0x0000000000085d4780B73119b644AE5ecd22b376"

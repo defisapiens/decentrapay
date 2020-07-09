@@ -18,7 +18,7 @@ export default state => {
       <div class="hero-foot">
         <div class="content has-text-centered">
           <p>
-            <a href="https://makerdao.com/en/dai/" target="_blank">What is DAI?</a> | <a href="https://github.com/codevet/daipay" target="_blank">Powered by DAIPAY</a>
+            <a href="https://github.com/codevet/daipay" target="_blank">Powered by Decentrapay</a>
           </p>
         </div>
       </div>

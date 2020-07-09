@@ -20,6 +20,7 @@ if (!walletDB)  {
 export default class {
   static async createInvoice(form) {
     delete form['apiKey']
+    form.currency = form.currency || 'DAI'
     const props = {...form}
     props.created = Date.now()
     let wallet = ethers.Wallet.createRandom()
