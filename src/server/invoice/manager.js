@@ -1,12 +1,11 @@
 import PouchDB from 'pouchdb'
 import { ethers } from 'ethers'
-
+PouchDB.plugin(require('pouchdb-find'))
+PouchDB.plugin(require('pouchdb-adapter-node-websql'))
 
 let walletDB, invoiceDB 
 
 if (!walletDB)  {
-  PouchDB.plugin(require('pouchdb-find'))
-  PouchDB.plugin(require('pouchdb-adapter-node-websql'))
   walletDB = new PouchDB('wallets.db', {adapter:'websql'})
   invoiceDB = new PouchDB('invoices.db', {adapter:'websql'})
   invoiceDB.createIndex({

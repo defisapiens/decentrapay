@@ -51,7 +51,7 @@ describe('basic functionality', function() {
       accounts = result
       console.log(accounts)
       // Load the wallet to deploy the contract with
-      let privateKey = '5015f9a9179d7dc3d5004bae03a073ec04cf84fac97d2f6f9dc3e9f537d01250'; // default ganache key
+      let privateKey = '97a5328dcde49f1f6224b18cddc935b4f3e79e80cb1dcb2cf43f1033be890fd9'; // default ganache key
       wallet = new ethers.Wallet(privateKey, provider);
       // Create an instance of a Contract Factory
       let factory = new ethers.ContractFactory(ERC20_ABI, bytecode, wallet);
