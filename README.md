@@ -20,7 +20,7 @@ The goal of the project is to provide merchants with a decentralized, trustless 
 
 Run the below commands:
 
-    git clone https://github.com/codevet/decentrapay.git
+    git clone https://github.com/defisapiens/decentrapay.git
     cd decentrapay
     npm install
 
