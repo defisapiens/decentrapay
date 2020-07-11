@@ -1,7 +1,7 @@
 {
-  "name": "daipay",
+  "name": "decentrapay",
   "version": "1.0.1",
-  "description": "Maker DAI payment processor",
+  "description": "Stablecoin payment processor",
   "scripts": {
     "test": "mocha --compilers js:@babel/register --timeout 20000 test/test.js",
     "wallets": "./node_modules/.bin/babel-node ./src/scripts/wallets.js",

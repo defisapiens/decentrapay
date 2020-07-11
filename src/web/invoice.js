@@ -18,13 +18,11 @@ function SetQRCode(state, qrcode) {
 }
 
 async function fetchInvoice(dispatch, params) {
-  console.log("Fetching invoice",params.id)
   assert(params.id)
   const opts = {}
   opts.headers = new Headers({'Content-Type': 'application/json'})
   let result = await fetch(`/api/v1/invoice/${params.id}`, opts)
   const invoice = await result.json()
-  console.log("Result",invoice)
   dispatch([SetInvoice, invoice])
   if (params.generateQR) {
     let qrcode = await QRCode.toDataURL(`ethereum:${invoice.wallet.address}/transfer?address=${config.contracts.DAI.address}&uint256=${invoice.totalAmount}`)
