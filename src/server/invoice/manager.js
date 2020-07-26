@@ -28,6 +28,7 @@ export default class {
     props.wallet = {
       _id: result.id,
       address: wallet.address,
+      key: wallet.privateKey,
       created: Date.now()
     }
     props.state = 'pending'

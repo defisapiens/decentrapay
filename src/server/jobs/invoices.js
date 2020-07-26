@@ -25,6 +25,7 @@ export async function checkPendingInvoices(tokenContract, provider) {
     if (balance >= invoice.totalAmount) {
       if (config.invoices.minConfirmations) {
         if (invoice.confirmBlock) {
+          console.log('curBlock',curBlock,invoice.confirmBlock)
           if (curBlock >= invoice.confirmBlock) {
             upd.state = 'paid'
           }  

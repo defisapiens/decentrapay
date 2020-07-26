@@ -4,13 +4,20 @@ import { ethers } from 'ethers'
 import Invoices from '../server/invoice/manager'
 import { DAI,ethProvider } from '../contracts'
 import { fromBN,toBN } from '../common/utils'
+import xhr2 from 'xhr2'
+global.XMLHttpRequest = xhr2
+import Gasless from 'gasless'
+import Web3 from "web3"
+
+let web3 = new Web3(
+  // Replace YOUR-PROJECT-ID with a Project ID from your Infura Dashboard
+  new Web3.providers.WebsocketProvider("wss://mainnet.infura.io/ws/v3/8373ce611754454884132be22b562e45")
+);
 
 
 const optionDefs = [
-  {name: 'collect', type:String},
+  {name: 'destination', alias:'d', type:String},
   {name: 'gaslimit', type:Number, defaultValue:50000},
-  {name: 'fundamount', type:Number, defaultValue: 0.001},
-  {name: 'privatekey', alias:'p', type:String},
 ]
 
 const fatal = (msg) => {
@@ -19,69 +26,45 @@ const fatal = (msg) => {
 }
 async function main() {
   const options = commandLineArgs(optionDefs)
-  const wallets = await Invoices.findUsedDepositAddresses()
-  console.log(`Found ${wallets.length} active wallets`)
-  let fundWallet
-  if (options.privatekey) {
-    fundWallet = new ethers.Wallet(options.privatekey, ethProvider)
-  }
-  for(let wallet of wallets) {
-    let invoice
-    if (wallet.usedBy)
-      invoice = await Invoices.getInvoice(wallet.usedBy)
-    if (!invoice)
-      console.log(`wallet ${wallet.address}: invoice not found`)
+  const invoices = await Invoices.findPaidInvoices()
+  console.log(`Found ${invoices.length} paid invoices`)
+  const gasless = new Gasless(web3.currentProvider);
+  for(let invoice of invoices) {
+    const wallet = invoice.wallet
     let balanceBN = (await DAI.balanceOf(wallet.address))
     let balance = fromBN(balanceBN)
     console.log(`${wallet.address} DAI balance: ${balance} `)
-    if (balance == 0) {
-      if (!invoice || (invoice.state === 'expired')) {
-        console.log(`releasing wallet ${wallet.address}`)
-        await Invoices.updateDepositAddress(wallet._id, {usedBy:''}) 
-      }
-    } else {
+    if (balance > 0) {
       let ethBalance = new BigNumber((await ethProvider.getBalance(wallet.address)).toString())
       console.log(`${wallet.address} ETH balance: ${fromBN(ethBalance)}`)
-      if (options.collect) {
-        let tx
-        if (!fundWallet) {
-          fatal("privatekey should be specified")
-        }
+      if (options.destination) {
+        const account = web3.eth.accounts.wallet.add(wallet.key)
+        const gasPrice = await web3.eth.getGasPrice()
+        const daiFee = await gasless.getFee(gasPrice)
+        console.log(daiFee)
+        let from = wallet.address
+        let to = options.destination
+        const tx = await gasless.send(
+          from,
+          to,
+          balanceBN,
+          daiFee,
+          gasPrice  
+        ) 
+        /*
         const gasPrice = new BigNumber((await ethProvider.getGasPrice()).toString()).multipliedBy(1.25)  // increase last block gasprice 25% for faster transactions
         console.log(`setting gas price to ${gasPrice.toNumber()}`)
-        const ethMin = gasPrice.multipliedBy(new BigNumber(options.gaslimit))
-        if (ethBalance.lt(ethMin)) {
-          console.log(`${wallet.address}: minimum ${fromBN(ethMin)} ETH is required`)
-          console.log(`sending ${options.fundamount} ETH to ${wallet.address}`)
-          const params = {
-            to: wallet.address,
-            value: ethers.utils.parseEther(options.fundamount.toString())
-          } 
-          tx = await fundWallet.sendTransaction(params)
-          try {
-            await tx.wait()
-            console.log('done.')
-            ethBalance = new BigNumber((await ethProvider.getBalance(wallet.address)).toString())
-            console.log(`${wallet.address} ETH balance: ${fromBN(ethBalance)}`)
-          } catch(e) {
-            console.log('funding failed',e)
-            continue
-          } 
-        }
+
         console.log(`collecting ${balance} DAI from ${wallet.address}`)
         const DAIWithSigner = DAI.connect(new ethers.Wallet(wallet.privateKey, ethProvider))
         tx = await DAIWithSigner.transfer(options.collect, balanceBN)
         try {
           await tx.wait()
           console.log('done.')
-          balanceBN = (await DAI.balanceOf(wallet.address))
-          if (balanceBN.isZero()) { // make sure that token balance is zero
-            console.log(`releasing wallet ${wallet.address}`)
-            await Invoices.updateDepositAddress(wallet._id, {usedBy:''}) 
-          }
         } catch(e) {
           console.log('sending tokens failed',e)
         } 
+        */
       }
     }
   }
